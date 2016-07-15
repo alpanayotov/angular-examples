@@ -63,5 +63,12 @@
 		};
 
 	}]);
+
+	app.directive( 'listItem', function() { 
+		return {
+			restrict: 'E',
+			templateUrl: 'js/directives/list-item.html'
+		}
+	});
 	
 })();

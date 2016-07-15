@@ -1,0 +1,5 @@
+<li>
+	<input type="checkbox" name="item-{{$index}}" id="item-{{$index}}" ng-model="item.isDone" ng-change="listCtrl.changeState( $index )">
+	<label for="item-{{$index}}" ng-bind="item.text" ng-class="{ 'strike-text': item.isDone }"></label>
+	<span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="listCtrl.removeTodo( $index )"></span>
+</li>
