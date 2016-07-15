@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>Angular Exmaple 1</title>
+
+	<script src="node_modules/angular/angular.js"></script>
+	<script src="js/app-todo.js"></script>
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body ng-app="toDos">
+	
+	<div class="container" ng-controller="listController as listCtrl">
+		<div class="col-lg-12">
+
+			<h3 ng-bind="listCtrl.listTitle"></h3>
+
+			<ul class="list-unstyled">
+				<li ng-repeat="item in listCtrl.listItems track by $index">
+					<input type="checkbox" name="item-{{$index}}" id="item-{{$index}}" ng-model="item.isDone" ng-change="listCtrl.changeState( $index )">
+					<label for="item-{{$index}}" ng-bind="item.text" ng-class="{ 'strike-text': item.isDone }"></label>
+					<span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="listCtrl.removeTodo( $index )"></span>
+				</li>
+			</ul>
+
+			<form ng-submit="listCtrl.addTodo()">
+				<input type="text" class="field" ng-model="listCtrl.todoText" required>
+				<input class="btn-primary" type="submit" value="Add ToDo">
+			</form>
+			
+		</div><!-- /.col -->
+	</div><!-- /.container -->
+
+</body>
+</html>
