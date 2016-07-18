@@ -2,7 +2,7 @@
 	var app;
 	app = angular.module('toDos', []);
 
-	app.controller('listController', ['$http', function( $http ) {
+	app.controller('listController', ['listData', function(listData) {
 
 		var vm         = this;
 		vm.todoText    = '';
@@ -13,15 +13,10 @@
 		vm.changeState = changeState;
 
 		if ( !localStorage.getItem('todo-items' ) ) {
-			$http.get('js/list.json')
-				.success( function( data ){
-					setToLocalStorage( data );	
-
-					vm.listItems = getFromLocalStorage();
-				})
-				.error( function(){
-					alert('No TODO!');
-				});
+			listData.success( function(data) {
+				vm.listItems = data;
+				setToLocalStorage( vm.listItems );	
+			});
 		} else {
 			vm.listItems = getFromLocalStorage();
 		}
@@ -70,5 +65,15 @@
 			templateUrl: 'js/directives/list-item.html'
 		}
 	});
+
+	app.factory( 'listData', ['$http', function($http){
+		return $http.get('js/list.json')
+			.success( function(data) {
+				return data;
+			})
+			.error( function(err) {
+				return err;
+			});
+	}]);
 	
 })();
