@@ -13,6 +13,7 @@
 		vm.addComment  = addComment;
 		vm.commentText = '';
 		vm.upVote      = upVote;
+		vm.downVote    = downVote;
 
 		function addComment() {
 			var newComment = {
@@ -26,6 +27,10 @@
 
 		function upVote(comment){
 			comment.upvotes++;
+		};
+
+		function downVote(comment){
+			comment.upvotes--;
 		};
 	}
 })();

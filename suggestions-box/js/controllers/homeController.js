@@ -9,7 +9,7 @@
 
 	function HomeController(suggestions){
 		var vm             = this;
-		vm.pageTitle       = 'Suggestions Box with Angular';
+		vm.pageTitle       = 'Suggestions Box with AngularJS!';
 		vm.suggestionTitle = '';
 		vm.suggestions     = [];
 		vm.addSuggestion   = addSuggestion;

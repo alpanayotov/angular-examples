@@ -1,26 +1,37 @@
 <div class="container">
 	<div class="suggestions">
-		<div class="row">
+		<div class="row well text-center">
 			<h3>{{vm.post.title}}</h3>
 		</div><!-- /.row -->
 		
 		<div class="row">
 			
-			<h5 ng-show="vm.post.comments.length">Comments</h5>
-			
-			<div class="comment" ng-repeat="comment in vm.post.comments">
-				<span>Upvotes: {{comment.upvotes}}</span>
-				<span class="glyphicon glyphicon-plus-sign" ng-click="vm.upVote(comment)"></span>
+			<div class="comment well" ng-repeat="comment in vm.post.comments">
+				<h4>Comments:</h4>
+
+				<div class="pull-right">
+					<span>Upvotes: {{comment.upvotes}}</span>
+					<span class="glyphicon glyphicon-plus-sign" ng-click="vm.upVote(comment)"></span>
+					<span class="glyphicon glyphicon-minus-sign" ng-click="vm.downVote(comment)"></span>
+				</div><!-- /.pull-right -->
+
 				<p>{{comment.text}}</p>	
 			</div><!-- /.commet -->
+			
+			<div class="well">
+				<div class="comment-preview" ng-show="vm.commentText.length">
+					<u>Preview:</u>
+					<p>{{vm.commentText}}</p>
+				</div><!-- /.comment-preview -->
 
-			<form ng-submit="vm.addComment()" style="margin-top: 50px">
-				<h4>Add Comment</h4>
-				<div class="form-group">
-					<textarea class="form-control" id="" cols="30" rows="10" ng-model="vm.commentText" required></textarea>
-				</div>
-				<button type="submit" class="btn btn-primary">Comment</button>
-			</form>
+				<form ng-submit="vm.addComment()" style="margin-top: 50px">
+					<h4>Add Comment</h4>
+					<div class="form-group">
+						<textarea class="form-control" id="" cols="30" rows="5" ng-model="vm.commentText" required></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary">Comment</button>
+				</form>
+			</div><!-- /.well -->
 
 		</div><!-- /.row -->	
 
