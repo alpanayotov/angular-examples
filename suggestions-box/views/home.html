@@ -1,0 +1,30 @@
+<div class="container">
+	<div class="well">
+		<h1 class="text-center">{{vm.pageTitle}}</h1>
+	</div><!-- /.well -->
+	
+	<div class="row">
+		<ul class="list-unstyled">
+			<li ng-repeat="suggestion in vm.suggestions | orderBy: '-upvotes'">
+				<h4>
+					<a ui-sref="suggestion({ suggestionId: $index })">{{ suggestion.title }}</a>
+				</h4>
+				<p>
+					<span>Upvotes: {{suggestion.upvotes}}</span>
+					<span class="glyphicon glyphicon-plus-sign" ng-click="vm.upVote(suggestion)"></span>
+					<span class="glyphicon glyphicon-minus-sign" ng-click="vm.downVote(suggestion)"></span>
+				</p>
+			</li>
+		</ul><!-- /.unstyled-list -->
+
+		
+		<form ng-submit="vm.addSuggestion()" style="margin-top: 50px" class="well">
+			<h4>Submit Your Suggestion </h4>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Great ideas here" ng-model="vm.suggestionTitle" required></input>
+				<button type="submit" class="btn btn-primary">Suggest</button>
+			</div>
+		</form>
+	</div><!-- /.row -->
+
+</div><!-- /.container -->
