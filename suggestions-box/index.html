@@ -6,7 +6,7 @@
 	<title>Suggestions Box With AngularJS</title>
 	
 	<script src="../node_modules/angular/angular.js"></script>	
-	<script src="../node_modules/angular-route/angular-route.min.js"></script>	
+	<script src="../node_modules/angular-ui-router/angular-ui-router.min.js"></script>	
 	
 	<link rel="shortcut icon" type="image/x-icon" href="css/images/favicon.ico" />
 	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -14,30 +14,32 @@
 </head>
 <body ng-app="SuggestionsBox">
 	
-	<div class="container" ng-controller="homeController as homeCntrl">
+	<div class="container" ng-controller="HomeController as homeCntrl">
 		<h1 class="text-center">{{homeCntrl.pageTitle}}</h1>
-
-		<ul class="list-unstyled">
-			<li ng-repeat="suggestion in homeCntrl.suggestions | orderBy: '-upvotes'">
-				<h4>
-					{{ suggestion.title }}
-				</h4>
-				<p>
-					<span>Upvotes: {{suggestion.upvotes}}</span>
-					<span class="glyphicon glyphicon-plus-sign" ng-click="homeCntrl.upVote(suggestion)"></span>
-					<span class="glyphicon glyphicon-minus-sign" ng-click="homeCntrl.downVote(suggestion)"></span>
-				</p>
-			</li>
-		</ul><!-- /.unstyled-list -->
-
 		
-		<form ng-submit="homeCntrl.addSuggestion()" style="margin-top: 50px">
-			<h3> Submit Your Suggestion </h3>
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Great ideas here" ng-model="homeCntrl.suggestionTitle"></input>
-			</div>
-			<button type="submit" class="btn btn-primary">Suggest</button>
-		</form>
+		<div class="row">
+			<ul class="list-unstyled">
+				<li ng-repeat="suggestion in homeCntrl.suggestions | orderBy: '-upvotes'">
+					<h4>
+						{{ suggestion.title }}
+					</h4>
+					<p>
+						<span>Upvotes: {{suggestion.upvotes}}</span>
+						<span class="glyphicon glyphicon-plus-sign" ng-click="homeCntrl.upVote(suggestion)"></span>
+						<span class="glyphicon glyphicon-minus-sign" ng-click="homeCntrl.downVote(suggestion)"></span>
+					</p>
+				</li>
+			</ul><!-- /.unstyled-list -->
+
+			
+			<form ng-submit="homeCntrl.addSuggestion()" style="margin-top: 50px">
+				<h4>Submit Your Suggestion </h4>
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Great ideas here" ng-model="homeCntrl.suggestionTitle" required></input>
+				</div>
+				<button type="submit" class="btn btn-primary">Suggest</button>
+			</form>
+		</div><!-- /.row -->
 
 	</div><!-- /.container -->
 	
@@ -45,7 +47,7 @@
 	<script src="js/app.js" type="text/javascript"></script>
 
 	<!-- Controllers -->
-	<script src="js/controllers/homeController.js" type="text/javascript"></script>
+	<script src="js/controllers/HomeController.js" type="text/javascript"></script>
 
 	<!-- Services -->
 	<script src="js/services/suggestionsService.js" type="text/javascript"></script>	
