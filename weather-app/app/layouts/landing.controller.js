@@ -31,12 +31,12 @@
 				return;
 			}
 
-			var wheaterAppData = {
+			var weatherAppData = {
 				'zipCode' : vm.zipCode,
 				'country' : vm.selectedCountry
 			}
 
-			storageService.setWeatherData(wheaterAppData);
+			storageService.setWeatherData(weatherAppData);
 
 			$state.go('/weather');
 		}
