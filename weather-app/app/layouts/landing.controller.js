@@ -5,9 +5,9 @@
 		.module('app')
 		.controller('LandingFormController', LandingFormController);
 
-	LandingFormController.$inject = ['countriesService', '$state'];
+	LandingFormController.$inject = ['countriesService', 'storageService', '$state'];
 
-	function LandingFormController(countriesService, $state) {
+	function LandingFormController(countriesService, storageService, $state) {
 		var vm             = this;
 		vm.countriesList   = [];
 		vm.selectedCountry = '';
@@ -36,8 +36,8 @@
 				'country' : vm.selectedCountry
 			}
 
-			localStorage.setItem('wheaterAppData', wheaterAppData);
-			
+			storageService.setWeatherData(wheaterAppData);
+
 			$state.go('/weather');
 		}
 	}
