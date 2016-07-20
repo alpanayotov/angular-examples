@@ -1,0 +1,30 @@
+<div class="container form-wrapper">
+	<div class="row">
+		<div class="col-lg-12 ">
+			
+			<div class="center-block">
+				<form ng-submit="vm.setLocationData()">
+					
+					<h3 class="text-center">Please fill the form</h3>
+
+					<div class="form-group">
+						<select ng-model="vm.selectedCountry" class="form-control" required>
+							<option value="">Choose Country</option>
+							<option ng-repeat="country in vm.countriesList" value="{{country.code}}">{{country.name}}</option>
+						</select>
+					</div><!-- /.form-group -->
+
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="vm.zipCode" placeholder="Enter Zip Code" required>
+					</div><!-- /.form-group -->
+
+					<div class="form-group">
+						<input type="submit" value="Go!" class="btn btn-primary center-block">
+					</div><!-- /.form-group -->
+
+				</form>
+			</div><!-- /.center-block -->
+			
+		</div><!-- /.col-lg-12 -->
+	</div><!-- /.row -->
+</div><!-- /.container -->	
