@@ -5,17 +5,22 @@
 		.module('app.core')
 		.controller('WeatherController', WeatherController);
 
-	WeatherController.$inject = [];
+	WeatherController.$inject = ['weatherService'];
 
-	function WeatherController() {
-		var vm = this;
-		vm.title = 'WeatherController';
+	function WeatherController(weatherService) {
+		var vm         = this;
+		vm.title       = 'WeatherController';
+		vm.weatherData = [];
 
 		activate();
 
 		////////////////
 
 		function activate() {
+			weatherService.getWeatherData().then(function(data) {
+				vm.weatherData = data;
+				console.log(vm.weatherData);
+			});	
 		}
 	}
 })();
