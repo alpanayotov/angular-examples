@@ -5,26 +5,11 @@
 		.module('app.core')
 		.controller('WeatherController', WeatherController);
 
-	WeatherController.$inject = ['weatherService'];
+	WeatherController.$inject = ['weatherData'];
 
-	function WeatherController(weatherService) {
+	function WeatherController(weatherData) {
 		var vm         = this;
 		vm.error       = '';
-		vm.weatherObject = [];
-
-		activate();
-
-		////////////////
-
-		function activate() {
-			weatherService.getWeatherData().then(function(data) {
-				if ( data !== undefined ) {
-					vm.weatherObject = data;
-					console.log(vm.weatherObject);
-				} else {
-					vm.error = 'No data is currently available!';
-				}
-			});	
-		}
+		vm.weatherObject = weatherData.value;
 	}
 })();

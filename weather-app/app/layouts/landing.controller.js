@@ -15,6 +15,7 @@
 		vm.setLocationData    = setLocationData;
 		vm.getBrowserPosition = getBrowserPosition;
 		vm.getFormData        = getFormData;
+		vm.weatherAppData     = {};
 
 		activate();
 
@@ -24,9 +25,9 @@
 			});
 		}
 
-		function setLocationData(weatherAppData) {
+		function setLocationData() {
 			storageService.deleteWeatherData();
-			storageService.setWeatherData(weatherAppData);
+			storageService.setWeatherData(vm.weatherAppData);
 			$state.go('/weather');
 		}
 
@@ -39,13 +40,13 @@
 				return;
 			}
 
-			var weatherAppData = {
+			vm.weatherAppData = {
 				'zipCode' : vm.zipCode,
 				'country' : vm.selectedCountry,
 				'method'  : 'byZip'
 			}
 
-			setLocationData(weatherAppData);
+			setLocationData();
 		}
 
 		function getBrowserPosition(){
@@ -53,13 +54,13 @@
 				timeout: 60000
 			}).then(function(position) {
 								   
-				var weatherAppData = {
+				vm.weatherAppData = {
 					'lat'   : position.coords.latitude,
 					'lang'  : position.coords.longitude,
 					'method': 'byCoordinates'
 				}
 
-				setLocationData(weatherAppData);
+				setLocationData();
 				
 			});
 		}

@@ -5,8 +5,9 @@
 		.module('app.routes', [])
 		.config(config);
 
-
-	function config($stateProvider, $urlRouterProvider) {
+	config.$inject = ['$stateProvider', '$urlRouterProvider', 'weatherServiceProvider'];
+		
+	function config($stateProvider, $urlRouterProvider, weatherServiceProvider) {
 		$urlRouterProvider.otherwise('/');
 
 		$stateProvider
@@ -20,8 +21,23 @@
 				url: '/weather',
 				templateUrl: 'app/layouts/weather.html',
 				controller: 'WeatherController',
-				controllerAs: 'vm'
+				controllerAs: 'vm',
+				resolve: {
+					weatherData: getWeatherDataFromService
+				}
 			});
+
+		function getWeatherDataFromService(weatherServiceProvider) {
+			console.log(weatherServiceProvider);
+			weatherServiceProvider.getWeatherData()
+				.then(function(data) {
+					if ( data !== undefined ) {
+						return data;
+					} 
+
+					return 'No data is currently available!';
+				});
+		}	
 	}
 
 })();
