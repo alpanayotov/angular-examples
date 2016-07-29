@@ -1,3 +1,8 @@
 <div class="container">
-	<h2>test</h2>
+	
+	<h2 ng-if="vm.error">{{vm.error}}</h2>
+	<h2 ng-if="vm.weatherObject">Current Weather</h2>
+	
+	<h3>{{vm.weatherObject.weatherData.name}} -- {{vm.weatherObject.description | uppercase }}</h3>
+
 </div><!-- /.container -->

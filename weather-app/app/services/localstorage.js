@@ -8,7 +8,8 @@
 	function storageService() {
 		var storateServices = {
 			setWeatherData : setWeatherData,
-			getWeatherData : getWeatherData
+			getWeatherData : getWeatherData,
+			deleteWeatherData : deleteWeatherData
 		}
 
 		return storateServices;
@@ -19,6 +20,10 @@
 
 		function getWeatherData() {
 			return JSON.parse(localStorage.getItem('weatherAppData'));
+		}
+
+		function deleteWeatherData(){
+			localStorage.removeItem('weatherAppData')	
 		}
 	}
 })();

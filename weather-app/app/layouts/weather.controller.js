@@ -9,8 +9,8 @@
 
 	function WeatherController(weatherService) {
 		var vm         = this;
-		vm.title       = 'WeatherController';
-		vm.weatherData = [];
+		vm.error       = '';
+		vm.weatherObject = [];
 
 		activate();
 
@@ -18,8 +18,12 @@
 
 		function activate() {
 			weatherService.getWeatherData().then(function(data) {
-				vm.weatherData = data;
-				console.log(vm.weatherData);
+				if ( data !== undefined ) {
+					vm.weatherObject = data;
+					console.log(vm.weatherObject);
+				} else {
+					vm.error = 'No data is currently available!';
+				}
 			});	
 		}
 	}

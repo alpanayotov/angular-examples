@@ -5,14 +5,16 @@
 		.module('app')
 		.controller('LandingFormController', LandingFormController);
 
-	LandingFormController.$inject = ['countriesService', 'storageService', '$state'];
+	LandingFormController.$inject = ['countriesService', 'storageService', '$state', '$geolocation'];
 
-	function LandingFormController(countriesService, storageService, $state) {
-		var vm             = this;
-		vm.countriesList   = [];
-		vm.selectedCountry = '';
-		vm.zipCode         = '';
-		vm.setLocationData = setLocationData;
+	function LandingFormController(countriesService, storageService, $state, $geolocation) {
+		var vm                = this;
+		vm.countriesList      = [];
+		vm.selectedCountry    = '';
+		vm.zipCode            = '';
+		vm.setLocationData    = setLocationData;
+		vm.getBrowserPosition = getBrowserPosition;
+		vm.getFormData        = getFormData;
 
 		activate();
 
@@ -22,7 +24,13 @@
 			});
 		}
 
-		function setLocationData() {
+		function setLocationData(weatherAppData) {
+			storageService.deleteWeatherData();
+			storageService.setWeatherData(weatherAppData);
+			$state.go('/weather');
+		}
+
+		function getFormData(){
 			if ( vm.selectedCountry === '' || !vm.selectedCountry ) {
 				return;
 			}
@@ -33,12 +41,27 @@
 
 			var weatherAppData = {
 				'zipCode' : vm.zipCode,
-				'country' : vm.selectedCountry
+				'country' : vm.selectedCountry,
+				'method'  : 'byZip'
 			}
 
-			storageService.setWeatherData(weatherAppData);
+			setLocationData(weatherAppData);
+		}
 
-			$state.go('/weather');
+		function getBrowserPosition(){
+			$geolocation.getCurrentPosition({
+				timeout: 60000
+			}).then(function(position) {
+								   
+				var weatherAppData = {
+					'lat'   : position.coords.latitude,
+					'lang'  : position.coords.longitude,
+					'method': 'byCoordinates'
+				}
+
+				setLocationData(weatherAppData);
+				
+			});
 		}
 	}
 })();

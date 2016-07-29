@@ -8,7 +8,8 @@
 	weatherService.$inject = ['$http', 'storageService', '$q'];
 
 	function weatherService($http, storageService, $q) {
-		var API_KEY       = 'af9ea6fc78a5d7f1afbf445eaa8f14f4';
+		var API_KEY = 'af9ea6fc78a5d7f1afbf445eaa8f14f4';
+		var API_URL = 'http://api.openweathermap.org/data/2.5/weather';
 
 		var locationData  = storageService.getWeatherData();
 		var cacheTreshold = 7200000; // 2 hours is ms
@@ -24,9 +25,18 @@
 					return $q.resolve(locationData);
 				}
 			} 
+
+			var url    = '';
+			var method = locationData.method;
+
+			if ( method === 'byZip' ) {
+				url = API_URL + '?zip='+ locationData.zipCode +','+ locationData.country +'&appid=' + API_KEY;
+			} else {
+				url = API_URL + '?lat='+ locationData.lat +'&lon='+ locationData.lang +'&appid=' + API_KEY;
+			}
 			
 			return $http
-				.get('http://api.openweathermap.org/data/2.5/weather?zip='+ locationData.zipCode +','+ locationData.country +'&appid=' + API_KEY )
+				.get(url)
 				.then(getWeatherDataComplete)
 				.catch( function(error){
 					console.log(error);

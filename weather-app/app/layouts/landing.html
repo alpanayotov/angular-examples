@@ -3,9 +3,9 @@
 		<div class="col-lg-12 ">
 			
 			<div class="center-block">
-				<form ng-submit="vm.setLocationData()">
+				<form ng-submit="vm.getFormData()">
 					
-					<h3 class="text-center">Please fill the form</h3>
+					<h3 class="text-center">Please provide information about the location</h3>
 
 					<div class="form-group">
 						<select ng-model="vm.selectedCountry" class="form-control" required>
@@ -23,6 +23,10 @@
 					</div><!-- /.form-group -->
 
 				</form>
+
+				<p class="text-center">or use the button below</p>
+
+				<a ng-click="vm.getBrowserPosition()" class="btn btn-primary center-block" href="#">Use the Location of My Browser!</a>
 			</div><!-- /.center-block -->
 			
 		</div><!-- /.col-lg-12 -->
