@@ -23,21 +23,26 @@
 				controller: 'WeatherController',
 				controllerAs: 'vm',
 				resolve: {
-					weatherData: getWeatherDataFromService
+					weatherDataObject: getWeatherDataFromService
 				}
 			});
 	}
 
-	getWeatherDataFromService.$inject = ['weatherService'];
+	getWeatherDataFromService.$inject = ['weatherService', '$state'];
 
-	function getWeatherDataFromService(weatherService) {
+	function getWeatherDataFromService(weatherService, $state) {
 		return weatherService.getWeatherData()
 			.then(function(data) {
 				if ( data !== undefined ) {
+					if ( data.hasOwnProperty('error') ) {
+						$state.go('/');
+					}
+
 					return data;
 				} 
-
-				return 'No data is currently available!';
+			})
+			.catch(function(error){
+				console.log(error);
 			});
 	}	
 })();

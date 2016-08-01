@@ -2,3 +2,6 @@ body { background-color: #00FFFF;  }
 
 .form-wrapper { padding-top: 200px; }
 .center-block { width: 500px; }
+
+.ng-enter { transition: .6s; opacity: 0; }
+.ng-enter-active { opacity: 1; }

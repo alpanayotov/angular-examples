@@ -13,27 +13,28 @@
 		var locationData  = storageService.getWeatherData();
 		var cacheTreshold = 7200000; // 2 hours is ms
 		var weatherData   = {
-			getWeatherData : getWeatherData
+			getWeatherData : getWeatherData,
+			getStoredWeatherData : getStoredWeatherData
 		};
 
 		return weatherData;
 
 		function getWeatherData() {
-			if ( locationData.hasOwnProperty('weatherData') ) {
-				if ( !isCacheExpired(locationData.time)) {
-					return $q.resolve(locationData);
-				}
-			} 
+			var storedData = getStoredWeatherData();
+
+			if ( Object.keys(storedData).length !== 0 ) {
+				return $q.resolve(storedData);
+			}
 
 			var url    = '';
 			var method = locationData.method;
 
 			if ( method === 'byZip' ) {
-				url = API_URL + '?zip='+ locationData.zipCode +','+ locationData.country +'&appid=' + API_KEY;
+				url = API_URL + '?zip='+ locationData.zipCode +','+ locationData.country +'&units=metric&appid=' + API_KEY;
 			} else {
-				url = API_URL + '?lat='+ locationData.lat +'&lon='+ locationData.lang +'&appid=' + API_KEY;
+				url = API_URL + '?lat='+ locationData.lat +'&lon='+ locationData.lang +'&units=metric&appid=' + API_KEY;
 			}
-			
+
 			return $http
 				.get(url)
 				.then(getWeatherDataComplete)
@@ -52,6 +53,24 @@
 				return locationData;
 			}
 		};
+
+		function getStoredWeatherData() {
+			var data = {};
+
+			if ( locationData === null ){
+				var error = {
+					'error': 'No available data'
+				};
+
+				data = error;
+			} else if ( locationData.hasOwnProperty('weatherData') ) {
+				if ( !isCacheExpired(locationData.time)) {
+					data = locationData;
+				}
+			} 
+
+			return data;
+		}
 
 		function isCacheExpired(timestamp) {
 			return Date.now() - timestamp > cacheTreshold;

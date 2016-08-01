@@ -6,13 +6,14 @@
 		.service('storageService', storageService);
 
 	function storageService() {
-		var storateServices = {
+		var storageServices = {
 			setWeatherData : setWeatherData,
 			getWeatherData : getWeatherData,
-			deleteWeatherData : deleteWeatherData
+			deleteWeatherData : deleteWeatherData,
+			deleteDataByKey : deleteDataByKey
 		}
 
-		return storateServices;
+		return storageServices;
 
 		function setWeatherData(data) {
 			localStorage.setItem('weatherAppData', JSON.stringify(data));
@@ -24,6 +25,13 @@
 
 		function deleteWeatherData(){
 			localStorage.removeItem('weatherAppData')	
+		}
+
+		function deleteDataByKey(key){
+			var data = getWeatherData();
+			delete data[key];
+			
+			setWeatherData(data);
 		}
 	}
 })();

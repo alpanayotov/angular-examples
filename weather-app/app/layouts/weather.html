@@ -1,8 +1,55 @@
 <div class="container">
 	
 	<h2 ng-if="vm.error">{{vm.error}}</h2>
-	<h2 ng-if="vm.weatherObject">Current Weather</h2>
-	
-	<h3>{{vm.weatherObject.weatherData.name}} -- {{vm.weatherObject.description | uppercase }}</h3>
 
+	<div ng-if="vm.weatherData" class="section-weather-data">
+		<h2>
+			Currently it is {{vm.weatherData.weather[0].main}} in {{vm.weatherData.name}}, {{vm.weatherData.sys.country}} <img src="http://openweathermap.org/img/w/{{vm.weatherData.weather[0].icon}}.png">
+			{{vm.weatherData.main.temp}}°C
+		</h2>
+			
+		<div class="section-location-data">
+			<p></p>
+
+			<p>Data fetched at {{vm.weatherData.dt * 1000 | date : 'dd/MM/yyyy @ h:mma' }}</p>
+
+			<table class="table table-striped table-bordered table-condensed">
+				<tbody>
+					<tr>
+						<td>Wind Speed</td>
+						<td>{{vm.weatherData.wind.speed}}m/s</td>
+					</tr>
+					<tr>
+						<td>Cloudiness</td>
+						<td>{{vm.weatherData.weather[0].description}}</td>
+					</tr>
+					<tr>
+						<td>Pressure<br></td>
+						<td>{{vm.weatherData.main.pressure}} hpa</td>
+					</tr>
+					<tr>
+						<td>Humidity</td>
+						<td>{{vm.weatherData.main.humidity}} %</td>
+					</tr>
+					<tr>
+						<td>Sunrise</td>
+						<td>{{ vm.weatherData.sys.sunrise * 1000 | date : 'mediumTime' }}</td>
+					</tr>
+					<tr>
+						<td>Sunset</td>
+						<td>{{ vm.weatherData.sys.sunset * 1000 | date : 'mediumTime' }}</td>
+					</tr>
+					<tr>
+						<td>Geo coords</td>
+						<td><a target="_blank" href="https://www.google.com/maps/place/{{vm.weatherData.coord.lat}},{{vm.weatherData.coord.lon}}">[ {{vm.weatherData.coord.lat}}, {{vm.weatherData.coord.lon}} ]</a></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<a ng-click="vm.updateLocationData()" class="btn btn-primary">Update Weather</a>
+			<a ng-click="vm.changeWeatherLocation()" class="btn btn-primary">Change Location</a>
+
+		</div><!-- /.section-location-data -->	
+
+	</div><!-- /.section-weather-data -->
 </div><!-- /.container -->
