@@ -6,6 +6,6 @@
 			'ngAnimate',
 			'ngGeolocation',
 			'ui.router',
-			'app.routes',
+			'app.routes'
 		]);
 })();

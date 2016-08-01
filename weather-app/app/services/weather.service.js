@@ -2,18 +2,10 @@
 	'use strict';
 
 	angular
-		.module('app')
-		.provider('weatherServiceProvider', weatherServiceProvider);
+		.module('app.core')
+		.factory('weatherService', weatherService);
 
-	weatherServiceProvider.$inject = ['$http', 'storageService', '$q'];
-
-	function weatherServiceProvider($http, storageService, $q){
-
-		this.$g = [function weatherServiceFactory() {
-			return new weatherService($http, storageService, $q);  
-		}];
-	}
-
+	weatherService.$inject = ['$http', 'storageService', '$q'];
 	function weatherService($http, storageService, $q) {
 		var API_KEY = 'af9ea6fc78a5d7f1afbf445eaa8f14f4';
 		var API_URL = 'http://api.openweathermap.org/data/2.5/weather';

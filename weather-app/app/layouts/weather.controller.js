@@ -8,8 +8,8 @@
 	WeatherController.$inject = ['weatherData'];
 
 	function WeatherController(weatherData) {
-		var vm         = this;
-		vm.error       = '';
-		vm.weatherObject = weatherData.value;
+		var vm           = this;
+		vm.error         = '';
+		vm.weatherObject = weatherData;
 	}
 })();

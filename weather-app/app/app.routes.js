@@ -5,15 +5,15 @@
 		.module('app.routes', [])
 		.config(config);
 
-	config.$inject = ['$stateProvider', '$urlRouterProvider', 'weatherServiceProvider'];
+	config.$inject = ['$stateProvider', '$urlRouterProvider'];
 		
-	function config($stateProvider, $urlRouterProvider, weatherServiceProvider) {
+	function config($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise('/');
 
 		$stateProvider
 			.state('/', {
 				url: '/',
-				templateUrl: "app/layouts/landing.html",
+				templateUrl: 'app/layouts/landing.html',
 				controller: 'LandingFormController',
 				controllerAs: 'vm'
 			})
@@ -26,18 +26,18 @@
 					weatherData: getWeatherDataFromService
 				}
 			});
-
-		function getWeatherDataFromService(weatherServiceProvider) {
-			console.log(weatherServiceProvider);
-			weatherServiceProvider.getWeatherData()
-				.then(function(data) {
-					if ( data !== undefined ) {
-						return data;
-					} 
-
-					return 'No data is currently available!';
-				});
-		}	
 	}
 
+	getWeatherDataFromService.$inject = ['weatherService'];
+
+	function getWeatherDataFromService(weatherService) {
+		return weatherService.getWeatherData()
+			.then(function(data) {
+				if ( data !== undefined ) {
+					return data;
+				} 
+
+				return 'No data is currently available!';
+			});
+	}	
 })();
