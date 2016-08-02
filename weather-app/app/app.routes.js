@@ -15,9 +15,12 @@
 				url: '/',
 				templateUrl: 'app/layouts/landing.html',
 				controller: 'LandingFormController',
-				controllerAs: 'vm'
+				controllerAs: 'vm',
+				resolve: {
+					countriesData: getCountriesData
+				}
 			})
-			.state('/weather', {
+			.state('weather', {
 				url: '/weather',
 				templateUrl: 'app/layouts/weather.html',
 				controller: 'WeatherController',
@@ -28,21 +31,27 @@
 			});
 	}
 
-	getWeatherDataFromService.$inject = ['weatherService', '$state'];
+	getWeatherDataFromService.$inject = ['weatherService'];
 
-	function getWeatherDataFromService(weatherService, $state) {
+	function getWeatherDataFromService(weatherService) {
 		return weatherService.getWeatherData()
 			.then(function(data) {
-				if ( data !== undefined ) {
-					if ( data.hasOwnProperty('error') ) {
-						$state.go('/');
-					}
-
-					return data;
-				} 
+				return data;
 			})
 			.catch(function(error){
-				console.log(error);
+				var error = {
+					error: error
+				};
+
+				return error;
 			});
-	}	
+	};
+
+	getCountriesData.$inject = ['countriesService'];
+
+	function getCountriesData(countriesService){
+		return countriesService.getCountries().then(function(data) {
+			return data;
+		});
+	};	
 })();

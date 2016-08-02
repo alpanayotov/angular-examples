@@ -18,7 +18,11 @@
 			return $http.get('content/countries.json')
 				.then(getCountriesComplete)
 				.catch(function(message) {
-					console.log(message);
+					var error = {
+						error: message
+					};
+
+					return error;
 				});
 
 			function getCountriesComplete(data){

@@ -7,73 +7,101 @@
 
 	weatherService.$inject = ['$http', 'storageService', '$q'];
 	function weatherService($http, storageService, $q) {
-		var API_KEY = 'af9ea6fc78a5d7f1afbf445eaa8f14f4';
-		var API_URL = 'http://api.openweathermap.org/data/2.5/weather';
-
-		var locationData  = storageService.getWeatherData();
+		var API_KEY       = 'a80057dbcf5b3a9ce4b0eb090b2f15b1';
+		var API_URL       = 'http://api.openweathermap.org/data/2.5/weather';
+		var appData       = storageService.getWeatherData();
+		
 		var cacheTreshold = 7200000; // 2 hours is ms
-		var weatherData   = {
-			getWeatherData : getWeatherData,
-			getStoredWeatherData : getStoredWeatherData
+
+		var weatherData = {
+			getWeatherData : getWeatherData
 		};
 
 		return weatherData;
 
 		function getWeatherData() {
-			var storedData = getStoredWeatherData();
+			var requestData = storageService.getRequestData();
+			var method      = requestData.method;
+			var cacheKey    = generateCacheKey(requestData);
+			var cachedData  = checkForCachedData(cacheKey);
+			var url;
 
-			if ( Object.keys(storedData).length !== 0 ) {
-				return $q.resolve(storedData);
+			if ( cachedData ) {
+				return $q.resolve(cachedData);
 			}
-
-			var url    = '';
-			var method = locationData.method;
-
+			
 			if ( method === 'byZip' ) {
-				url = API_URL + '?zip='+ locationData.zipCode +','+ locationData.country +'&units=metric&appid=' + API_KEY;
+				url = API_URL + '?zip='+ requestData.zipCode +','+ requestData.country +'&units=metric&appid=' + API_KEY;
 			} else {
-				url = API_URL + '?lat='+ locationData.lat +'&lon='+ locationData.lang +'&units=metric&appid=' + API_KEY;
+				url = API_URL + '?lat='+ requestData.lat +'&lon='+ requestData.lang +'&units=metric&appid=' + API_KEY;
 			}
 
 			return $http
 				.get(url)
 				.then(getWeatherDataComplete)
 				.catch( function(error){
-					console.log(error);
+					var error = {
+						'error' : error
+					}
+
+					return error;
 				});
 
 			function getWeatherDataComplete(data){
 				if ( data.data.cod !== 200 ){
-					return $q.reject(data.data.message);
+					var error = {
+						error : data.data.message
+					};
+
+					return $q.reject(error);
 				}
 
-				locationData.weatherData = data.data;
-				locationData.time        = Date.now(); 
+				var cacheKey     = generateCacheKey(requestData);
+				var locationData = {};
+
+				locationData = {
+					weatherData: data.data,
+					method: method,
+					time: Date.now(),
+					cacheKey: cacheKey
+				};
+
 				storageService.setWeatherData(locationData);
+
 				return locationData;
 			}
 		};
 
-		function getStoredWeatherData() {
-			var data = {};
+		function checkForCachedData(cacheKey) {
+			var cachedData = storageService.getWeatherData();
 
-			if ( locationData === null ){
-				var error = {
-					'error': 'No available data'
-				};
-
-				data = error;
-			} else if ( locationData.hasOwnProperty('weatherData') ) {
-				if ( !isCacheExpired(locationData.time)) {
-					data = locationData;
-				}
+			if ( ! cachedData.hasOwnProperty(cacheKey) ) { 
+				return false;
+			}
+			
+			if ( isCacheExpired(cachedData[cacheKey].time ) ) {
+				// delete from cache
+				return false
 			} 
 
-			return data;
+			return cachedData[cacheKey];
 		}
 
 		function isCacheExpired(timestamp) {
 			return Date.now() - timestamp > cacheTreshold;
+		}
+
+		function generateCacheKey(requestData) {
+			var method = requestData.method;
+			var cacheKey;
+
+			if ( method === 'byZip' ) {
+				cacheKey = requestData.zipCode + '_' + requestData.country;
+			} else {
+				cacheKey = requestData.lat.toString() + '_' + requestData.lang.toString();
+			}
+
+			return cacheKey;
 		}
 	}
 

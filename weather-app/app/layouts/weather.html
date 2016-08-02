@@ -1,10 +1,9 @@
 <div class="container">
-	
-	<h2 ng-if="vm.error">{{vm.error}}</h2>
+	<h2 ng-if="vm.weatherDataObject.error">{{vm.weatherDataObject.error.error}}</h2>
 
 	<div ng-if="vm.weatherData" class="section-weather-data">
 		<h2>
-			Currently it is {{vm.weatherData.weather[0].main}} in {{vm.weatherData.name}}, {{vm.weatherData.sys.country}} <img src="http://openweathermap.org/img/w/{{vm.weatherData.weather[0].icon}}.png">
+			Currently in {{vm.weatherData.name}}, {{vm.weatherData.sys.country}}: {{vm.weatherData.weather[0].main}} <img src="http://openweathermap.org/img/w/{{vm.weatherData.weather[0].icon}}.png">
 			{{vm.weatherData.main.temp}}°C
 		</h2>
 			
@@ -52,4 +51,7 @@
 		</div><!-- /.section-location-data -->	
 
 	</div><!-- /.section-weather-data -->
+
+	<a ng-if="vm.weatherDataObject.error" ng-click="vm.changeWeatherLocation()" class="btn btn-primary">Change Location</a>
+
 </div><!-- /.container -->

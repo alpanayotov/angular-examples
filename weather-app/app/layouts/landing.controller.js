@@ -5,62 +5,49 @@
 		.module('app')
 		.controller('LandingFormController', LandingFormController);
 
-	LandingFormController.$inject = ['countriesService', 'storageService', '$state', '$geolocation'];
+	LandingFormController.$inject = ['storageService', '$state', '$geolocation', 'countriesData'];
 
-	function LandingFormController(countriesService, storageService, $state, $geolocation) {
+	function LandingFormController(storageService, $state, $geolocation, countriesData) {
 		var vm                = this;
-		vm.countriesList      = [];
+		vm.countriesList      = countriesData;
 		vm.selectedCountry    = '';
 		vm.zipCode            = '';
-		vm.setLocationData    = setLocationData;
+		vm.setRequestData     = setRequestData;
 		vm.getBrowserPosition = getBrowserPosition;
-		vm.getFormData        = getFormData;
-		vm.weatherAppData     = {};
+		vm.handleFormSubmit   = handleFormSubmit;
+		vm.requestData        = {};
 
-		activate();
-
-		function activate(){
-			countriesService.getCountries().then(function(data) {
-				vm.countriesList = data;
-			});
+		function setRequestData() {
+			storageService.setRequestData(vm.requestData);
+			$state.go('weather');
 		}
 
-		function setLocationData() {
-			storageService.deleteWeatherData();
-			storageService.setWeatherData(vm.weatherAppData);
-			$state.go('/weather');
-		}
-
-		function getFormData(){
-			if ( vm.selectedCountry === '' || !vm.selectedCountry ) {
+		function handleFormSubmit(){
+			if ( !vm.zipCode || !vm.selectedCountry ) {
 				return;
 			}
 
-			if ( vm.zipCode === '' || !vm.zipCode ) {
-				return;
-			}
-
-			vm.weatherAppData = {
+			vm.requestData = {
 				'zipCode' : vm.zipCode,
 				'country' : vm.selectedCountry,
-				'method'  : 'byZip'
-			}
+				'method' : 'byZip'
+			};
 
-			setLocationData();
+			setRequestData();
 		}
 
 		function getBrowserPosition(){
 			$geolocation.getCurrentPosition({
 				timeout: 60000
 			}).then(function(position) {
-								   
-				vm.weatherAppData = {
+				
+				vm.requestData = {
 					'lat'   : position.coords.latitude,
 					'lang'  : position.coords.longitude,
-					'method': 'byCoordinates'
-				}
+					'method' : 'byCoordinates'
+				};
 
-				setLocationData();
+				setRequestData();
 				
 			});
 		}
