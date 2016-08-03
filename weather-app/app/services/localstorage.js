@@ -40,10 +40,9 @@
 		}
 
 		function deleteDataByKey(key){
-			var data = getRequestData();
+			var data = getWeatherData();
 			delete data[key];
-			
-			setRequestData(data);
+			setWeatherData(data);
 		}
 	}
 })();
